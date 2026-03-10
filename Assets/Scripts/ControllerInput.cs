@@ -16,7 +16,7 @@ public class ControllerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //for controller or keyboard
+        //for controller or keyboard (if enabled for mouse, player moves towards mouse and mouse movement direction, does not stay directly on top of it)
         //transform.position += (Vector3)movement * speed * Time.deltaTime;
         //for mouse
         transform.position = movement;
