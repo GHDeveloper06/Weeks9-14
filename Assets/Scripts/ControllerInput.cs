@@ -16,8 +16,10 @@ public class ControllerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += (Vector3)movement * speed * Time.deltaTime;
-
+        //for controller or keyboard
+        //transform.position += (Vector3)movement * speed * Time.deltaTime;
+        //for mouse
+        transform.position = movement;
     }
 
     public void OnMove(InputAction.CallbackContext contextMove)
@@ -38,7 +40,7 @@ public class ControllerInput : MonoBehaviour
     public void OnPoint(InputAction.CallbackContext contextPoint)
     {
         //same as Mouse.current.position.ReadValue()
-        movement = Camera.main.ScreenToViewportPoint(contextPoint.ReadValue<Vector2>());
+        movement = Camera.main.ScreenToWorldPoint(contextPoint.ReadValue<Vector2>());
 
     }
 
