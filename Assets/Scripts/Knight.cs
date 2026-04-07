@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +8,8 @@ public class Knight : MonoBehaviour
     [SerializeField] Vector2 movement;
     public Animator KAnimator;
     public float speed = 5;
+
+    public CinemachineImpulseSource impulseSource;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,12 +25,23 @@ public class Knight : MonoBehaviour
     public void FootStep()
     {
         SFX.Play();
+        //impulseSource.GenerateImpulse();
+    }
+
+    public void CameraShake() 
+    {
+        impulseSource.GenerateImpulse();
     }
 
     public void OnMove(InputAction.CallbackContext contextMove)
     {
-        KAnimator.SetFloat("AnimState", 1f);
+        //KAnimator.SetFloat("AnimState", 1f);
         movement = contextMove.ReadValue<Vector2>();
+        
+        if (contextMove.performed == true) 
+        {
+            KAnimator.SetTrigger("Run");
+        }
     }
 
     public void OnAttack(InputAction.CallbackContext contextAttack)
@@ -40,4 +54,5 @@ public class Knight : MonoBehaviour
             //SFX.Play();
         }
     }
+
 }
