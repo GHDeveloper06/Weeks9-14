@@ -4,11 +4,12 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     //set up player values & stats
-    public float pSpeed = 5;
+    public float pSpeed = 3;
     public int eCount = 0; //how many times they can evolve
     [SerializeField] Vector2 pMovement;
-    public float pAttackCD = 1.23f;
-    public float pHP = 3;
+    public float pAttackCD = 0.96f;
+    public float pHP = 4450;
+    public float pDamage = 355;
     public bool isRight = false;
     public bool isAttacking = false;
 
@@ -139,10 +140,10 @@ public class Player : MonoBehaviour
     {
 
         if (contextEvolve.canceled == true) 
-        {
-            eCount++;
-            if (eCount <= 3)
+        {  
+            if (eCount <= 2)
             {
+                eCount++;
                 pSpeed += 1;
                 Debug.Log("Trying to Evolve!" + eCount);
             }
