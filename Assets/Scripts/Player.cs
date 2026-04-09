@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
@@ -16,6 +17,8 @@ public class Player : MonoBehaviour
     public AudioSource pSFX;
     public SpriteRenderer pSpriteRenderer;
     public Animator pAnimator;
+
+    //public UnityEvent OnAttackEnemy;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -141,7 +144,7 @@ public class Player : MonoBehaviour
 
         if (contextEvolve.canceled == true) 
         {  
-            if (eCount <= 2)
+            if (eCount < 2)
             {
                 eCount++;
                 pSpeed += 1;

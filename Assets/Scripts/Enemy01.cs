@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Enemy01 : MonoBehaviour
 {//doge
@@ -25,6 +26,8 @@ public class Enemy01 : MonoBehaviour
     public bool isAttacking = false;
     public bool isALiving = true;
 
+    public UnityEvent onAttackPlayer;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,7 +50,7 @@ public class Enemy01 : MonoBehaviour
             {
                 //dont play walk animation
                 eAnimator.SetBool("DogeIsWalking", false);
-                eIsWalking = false;
+                eIsWalking = false;//eISWalking seems redundant rn but I remember creating it for a reason thinking ahead
             }
             else 
             {
@@ -75,11 +78,13 @@ public class Enemy01 : MonoBehaviour
         {
             eSpriteRenderer.flipX = false;
             transform.position += transform.right * eSpeed * Time.deltaTime;
+            elseXbool = false;
         }
         else if (eDist_targetPosX <= -1.7)
         {
             eSpriteRenderer.flipX = true;
             transform.position += transform.right * -eSpeed * Time.deltaTime;
+            elseXbool = false;
         }
         else
         {
@@ -89,10 +94,12 @@ public class Enemy01 : MonoBehaviour
         if (eDist_targetPosY >= 0.15f)
         {
             transform.position += transform.up * eSpeed * Time.deltaTime;
+            elseYbool = false;
         }
         else if (eDist_targetPosY <= -0.15f)
         {
             transform.position += transform.up * -eSpeed * Time.deltaTime;
+            elseYbool = false;
         }
         else
         {
