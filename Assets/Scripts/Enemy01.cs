@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -26,7 +27,7 @@ public class Enemy01 : MonoBehaviour
     public bool isAttacking = false;
     public bool isALiving = true;
 
-    public UnityEvent onAttackPlayer;
+    public UnityEvent onDogeAttackPlayer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,25 +44,35 @@ public class Enemy01 : MonoBehaviour
 
         if (isALiving == true && isAttacking == false) 
         {
-            //let the enemy walk
-            EnemyWalker();
-            //play animation if elseX and elseY bools aren't both true
-            if (elseXbool == true && elseYbool == true)
+            IsEnemyWalking();
+            //if the enemy is not walking and attack is off cooldown attack
+            
+            if (eIsWalking == false) 
             {
-                //dont play walk animation
-                eAnimator.SetBool("DogeIsWalking", false);
-                eIsWalking = false;//eISWalking seems redundant rn but I remember creating it for a reason thinking ahead
+                onDogeAttackPlayer.Invoke();
             }
-            else 
-            {
-                //play walk animation
-                eAnimator.SetBool("DogeIsWalking", true);
-                eIsWalking = true;
-            }
+            //if the enemy is walking do not attack
         }
-
     }
 
+    public void IsEnemyWalking() 
+    {
+        //let the enemy walk
+        EnemyWalker();
+        //play animation if elseX and elseY bools aren't both true
+        if (elseXbool == true && elseYbool == true)
+        {
+            //dont play walk animation
+            eAnimator.SetBool("DogeIsWalking", false);
+            eIsWalking = false;//eISWalking seems redundant rn but I remember creating it for a reason thinking ahead
+        }
+        else
+        {
+            //play walk animation
+            eAnimator.SetBool("DogeIsWalking", true);
+            eIsWalking = true;
+        }
+    }
     public void EnemyWalker() 
     {
 
@@ -108,8 +119,24 @@ public class Enemy01 : MonoBehaviour
 
     }
 
+    //on attack event functions
     public void eBite() 
-    {
+    {//called with animation events
         eSFX.Play();
     }
+
+    public void DogeBite() 
+    {
+        eAnimator.SetTrigger("DogeAttack");
+    }
+    
+    public void DogeAttackCooldown() 
+    {//called with animation events
+
+    }
+
+    //IEnumerator DogeAttkCD() 
+    //{
+      //  float t = 0;
+    //}
 }

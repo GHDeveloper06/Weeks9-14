@@ -320,7 +320,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &450417173
 Animator:
   serializedVersion: 7
@@ -471,7 +471,7 @@ MonoBehaviour:
   eIsWalking: 0
   isAttacking: 0
   isALiving: 1
-  onAttackPlayer:
+  onDogeAttackPlayer:
     m_PersistentCalls:
       m_Calls: []
 --- !u!212 &450417176
@@ -1333,7 +1333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1081701403
 Animator:
   serializedVersion: 7
@@ -1484,7 +1484,7 @@ MonoBehaviour:
   eIsWalking: 0
   isAttacking: 0
   isALiving: 1
-  onAttackPlayer:
+  onDogeAttackPlayer:
     m_PersistentCalls:
       m_Calls: []
 --- !u!212 &1081701406
@@ -1703,9 +1703,21 @@ MonoBehaviour:
   eIsWalking: 0
   isAttacking: 0
   isALiving: 1
-  onAttackPlayer:
+  onDogeAttackPlayer:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1663307201}
+        m_TargetAssemblyTypeName: Enemy01, Assembly-CSharp
+        m_MethodName: DogeBite
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!212 &1663307202
 SpriteRenderer:
   serializedVersion: 2
