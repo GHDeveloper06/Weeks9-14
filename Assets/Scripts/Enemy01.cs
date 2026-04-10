@@ -8,14 +8,15 @@ public class Enemy01 : MonoBehaviour
     public SpriteRenderer eSpriteRenderer;
     public AudioSource eSFX;
     public Animator eAnimator;
-
+    //set up stats
     public float eHP = 9000;
     public float eSpeed = 2.5f;
     public float eAttackCD = 1.24f;
     public float eDamage = 800;
     public bool isRight = true;
 
-    public Player playerScript;
+//public Player playerScript; ended up not needing this at all
+//need to have the enemy move like it's lerping without lerping
     public float targetPosX;
     public float eDist_targetPosX;
     public float targetPosY;
@@ -26,34 +27,27 @@ public class Enemy01 : MonoBehaviour
     public bool eIsWalking = false;
     public bool isAttacking = false;
     public bool isALiving = true;
-    public bool isAttackOffCD = true;
+    public bool isAttackOffCD = true; //CD is cooldown
 
     //public bool coroutineAttackSwitch = false;
 
     public UnityEvent onDogeAttackPlayer;
+    //It can only attack if in range for X and Y
     public bool isInRangeX = false;
     public bool isInRangeY = false;
     public bool isInRange = false;
-
-    //Coroutine DogeA
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
 
     // Update is called once per frame
     void Update()
     {
         //check if enemy has hp left
         isAlive();
-        //transform.position += (Vector3)pMovement * pSpeed * Time.deltaTime;
-        //pMovement = contextMove.ReadValue<Vector2>();
-        //Vector2 targestPos = player.transform.position.ReadValue<Vector2>();
+        //check if enemy is in range
         AttackRangeCheck();
+        //flip IsInRange booleans
         AttackRangeCheckBoolean();
         if (isALiving == true)
-        {
+        {//only let it do stuff if it has HP
             if (isAttacking == false && isInRange == false)
             {
                 //if the enemy is not attacking and alive they can walk
@@ -70,10 +64,13 @@ public class Enemy01 : MonoBehaviour
         }
         else 
         {
+            //doesn't need to worry about attack cooldowns if its dead
+            //this would've mattered more when I originally planned to have enemy variants
+            //they would've had longer attack cooldowns
             StopAllCoroutines();
         }
     }
-
+    //boolean check if alive
     public void isAlive() 
     {
         if (eHP > 0)
@@ -85,7 +82,6 @@ public class Enemy01 : MonoBehaviour
             isALiving = false;
         }
     }
-
     public void IsEnemyWalking() 
     {
         //let the enemy walk
@@ -123,17 +119,17 @@ public class Enemy01 : MonoBehaviour
         }
         else if (eDist_targetPosX <= -1.7)
         {
-            eSpriteRenderer.flipX = true;
+            eSpriteRenderer.flipX = true; //flip sprite to face player if player gets past
             transform.position += transform.right * -eSpeed * Time.deltaTime;
             elseXbool = false;
         }
         else
-        {
+        {//bool for when Doge is no longer moving with X
             elseXbool = true;
         }
         //same thing but for Y now
         if (eDist_targetPosY >= 0.15f)
-        {
+        {//y sprite doesn't need to be flippped at all
             transform.position += transform.up * eSpeed * Time.deltaTime;
             elseYbool = false;
         }
@@ -143,7 +139,7 @@ public class Enemy01 : MonoBehaviour
             elseYbool = false;
         }
         else
-        {
+        {//bool for when Doge is no longer moving with Y
             elseYbool = true;
         }
     }
@@ -222,25 +218,24 @@ public class Enemy01 : MonoBehaviour
     
     public void DogeAttackCooldown() 
     {//called with animation event 8 frame
+        //I am using battle cats animation which are broken up into foreswing and backswing
+        //backswing is attack recovery/end animation, so the cooldown starts when the backswing starts
         onDogeAttackPlayer.Invoke(); //there is a bug where this is being invoked twice, might be due to animation events IDK dont have time to fix it
         StartCoroutine(DogeACDHandler());
-        /*if (isAttackOffCD == true)
-        {
-            StopCoroutine(DogeAttkCD());
-        }*/
     }
 
     IEnumerator DogeACDHandler() 
     { 
         yield return StartCoroutine(DogeAttkCD());
         isAttackOffCD = true;
+        //attack is off cooldown after coroutine finishes I think
     }
     IEnumerator DogeAttkCD() 
     {
         float t = 0;
 
         while (t < eAttackCD)
-        { 
+        {//while coroutine is counting, attack is on cooldown 
             t += Time.deltaTime;
             yield return isAttackOffCD = false;
         }

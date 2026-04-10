@@ -16,14 +16,14 @@ public class Player : MonoBehaviour
     public bool isAttacking = false;
     public bool isAttackOffCD = true;
     public float damageMarkiplier = 1f;
-
+    //get references for stuff this changes/affects
     public AudioSource pSFX;
     public SpriteRenderer pSpriteRenderer;
     public Animator pAnimator;
-
+    //need to reference Doge stats
     public Enemy01 DogeScript;
 
-    public Color Colour;
+    //public Color Colour; ran out of time to do more cool stuff
 
     //public UnityEvent OnAttackEnemy;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //only let player do stuff if they have HP
         if (pHP > 0)
         {
             if (isAttacking == true)
@@ -48,7 +49,7 @@ public class Player : MonoBehaviour
         }
         else 
         { 
-        
+        //let them do nothing if they have no HP
         }
     }
 
@@ -121,12 +122,11 @@ public class Player : MonoBehaviour
     {
         //KAnimator.SetFloat("AnimState", 1f);
         pMovement = contextMove.ReadValue<Vector2>();
-        Debug.Log(pMovement);
+        //Debug.Log(pMovement);
         //pAnimator.SetTrigger("CatWalking");
         
-
         if (pMovement.x > 0)
-        {
+        {//if detected player input is moving to the right, flip sprite
             pSpriteRenderer.flipX = true;
             isRight = true;
         }
@@ -155,15 +155,17 @@ public class Player : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext contextEvolve) 
     {
-
+        //wanted to do cooler stuff like changing sprite and more stats but ran out of time
         if (contextEvolve.performed == true) 
-        {  
+        {  //buff player speed but give them a debuff to counteract with a limit
             if (eCount < 2)
             {
                 eCount++;//e for evolve not enemy in this case
-                damageMarkiplier += 0.87f;//the multiplier of 87
+                //not needed at all, just makes this nothing Event slightly more interesting
+                damageMarkiplier += 0.87f;//the multiplier of 87, debuff
+                //buff
                 pSpeed += 1;
-                Debug.Log("Trying to Evolve!" + eCount);
+                //Debug.Log("Trying to Evolve!" + eCount);
             }
             else 
             { 
@@ -175,15 +177,15 @@ public class Player : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext contextAttack)
     {
-        int aCount = 0;
-
+        //int aCount = 0;
+        //only let the player attack once and only when attack is off cooldown
         if (contextAttack.started == true && isAttackOffCD == true)
         {
             pAnimator.SetTrigger("CatAttack1");
-            aCount++;
-            Debug.Log("attacking" + aCount);
+            //aCount++;
+            //Debug.Log("attacking" + aCount);
             pSFX.Play();
-            //pSpeed += 1;
+            //damage the enemy
             AntagonistHurtbyPlayer();
         }
     }
@@ -201,12 +203,13 @@ public class Player : MonoBehaviour
 
     public void AntagonistHurtbyPlayer() 
     {
+        //reference the enemies range script to detect if the player is close enough to damage enemy
         if (DogeScript.isInRange == true)
         {
             DogeScript.eHP -= pDamage;
         } 
     }
-
+    //same coroutine attack cooldown method as enemy
     public void startattkCooldown() 
     {//called by animation event
         StartCoroutine(PlayerACDHandler());
@@ -226,4 +229,4 @@ public class Player : MonoBehaviour
             yield return isAttackOffCD = false;
         }
     }
-}
+}//I got carried away with functions, I think a lot of what I did was unoptimal, but I have a better idea for next time
