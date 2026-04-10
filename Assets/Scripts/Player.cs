@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
@@ -13,10 +14,16 @@ public class Player : MonoBehaviour
     public float pDamage = 355;
     public bool isRight = false;
     public bool isAttacking = false;
+    public bool isAttackOffCD = true;
+    public float damageMarkiplier = 1f;
 
     public AudioSource pSFX;
     public SpriteRenderer pSpriteRenderer;
     public Animator pAnimator;
+
+    public Enemy01 DogeScript;
+
+    public Color Colour;
 
     //public UnityEvent OnAttackEnemy;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -28,15 +35,21 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isAttacking == true)
+        if (pHP > 0)
         {
-            //no movement allowed
+            if (isAttacking == true)
+            {
+                //no movement allowed
+            }
+            else if (isAttacking == false)
+            {//allow player to walk
+                pMovementRestrict();
+            }
         }
-        else if (isAttacking == false) 
-        {//allow player to walk
-            pMovementRestrict();
+        else 
+        { 
+        
         }
-            
     }
 
     //disables walking
@@ -73,7 +86,8 @@ public class Player : MonoBehaviour
             }
             else
             {
-                //do nothing
+                //do nothing, stop things that are happening
+                StopAllCoroutines();
             }
         }
         else if (transform.position.y <= -3.2)
@@ -142,11 +156,12 @@ public class Player : MonoBehaviour
     public void OnInteract(InputAction.CallbackContext contextEvolve) 
     {
 
-        if (contextEvolve.canceled == true) 
+        if (contextEvolve.performed == true) 
         {  
             if (eCount < 2)
             {
-                eCount++;
+                eCount++;//e for evolve not enemy in this case
+                damageMarkiplier += 0.87f;//the multiplier of 87
                 pSpeed += 1;
                 Debug.Log("Trying to Evolve!" + eCount);
             }
@@ -162,14 +177,53 @@ public class Player : MonoBehaviour
     {
         int aCount = 0;
 
-        if (contextAttack.started == true)
+        if (contextAttack.started == true && isAttackOffCD == true)
         {
             pAnimator.SetTrigger("CatAttack1");
             aCount++;
             Debug.Log("attacking" + aCount);
             pSFX.Play();
             //pSpeed += 1;
+            AntagonistHurtbyPlayer();
         }
+    }
 
+    public void PlayerHit() 
+    {
+        //int count = 0;
+        if (DogeScript.isInRange == true) 
+        {
+            //count += 1;
+            pHP -= DogeScript.eDamage * damageMarkiplier;
+            //Debug.Log("Player was hit " + count + " times"); this is a bug where This is being invoked twice for some reason
+        }
+    }
+
+    public void AntagonistHurtbyPlayer() 
+    {
+        if (DogeScript.isInRange == true)
+        {
+            DogeScript.eHP -= pDamage;
+        } 
+    }
+
+    public void startattkCooldown() 
+    {//called by animation event
+        StartCoroutine(PlayerACDHandler());
+    }
+    IEnumerator PlayerACDHandler()
+    {
+        yield return StartCoroutine(PlayerAttkCD());
+        isAttackOffCD = true;
+    }
+    IEnumerator PlayerAttkCD()
+    {
+        float t = 0;
+
+        while (t < pAttackCD)
+        {
+            t += Time.deltaTime;
+            yield return isAttackOffCD = false;
+        }
     }
 }

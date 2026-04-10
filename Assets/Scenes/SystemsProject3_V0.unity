@@ -471,9 +471,13 @@ MonoBehaviour:
   eIsWalking: 0
   isAttacking: 0
   isALiving: 1
+  isAttackOffCD: 1
   onDogeAttackPlayer:
     m_PersistentCalls:
       m_Calls: []
+  isInRangeX: 0
+  isInRangeY: 0
+  isInRange: 0
 --- !u!212 &450417176
 SpriteRenderer:
   serializedVersion: 2
@@ -892,13 +896,16 @@ MonoBehaviour:
   eCount: 0
   pMovement: {x: 0, y: 0}
   pAttackCD: 0.96
-  pHP: 4450
-  pDamage: 355
+  pHP: 13350
+  pDamage: 1112
   isRight: 0
   isAttacking: 0
+  isAttackOffCD: 1
+  damageMarkiplier: 1
   pSFX: {fileID: 566397915}
   pSpriteRenderer: {fileID: 566397911}
   pAnimator: {fileID: 566397914}
+  DogeScript: {fileID: 1663307201}
 --- !u!95 &566397914
 Animator:
   serializedVersion: 7
@@ -1224,7 +1231,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 917094049}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -1484,9 +1491,13 @@ MonoBehaviour:
   eIsWalking: 0
   isAttacking: 0
   isALiving: 1
+  isAttackOffCD: 1
   onDogeAttackPlayer:
     m_PersistentCalls:
       m_Calls: []
+  isInRangeX: 0
+  isInRangeY: 0
+  isInRange: 0
 --- !u!212 &1081701406
 SpriteRenderer:
   serializedVersion: 2
@@ -1703,6 +1714,7 @@ MonoBehaviour:
   eIsWalking: 0
   isAttacking: 0
   isALiving: 1
+  isAttackOffCD: 1
   onDogeAttackPlayer:
     m_PersistentCalls:
       m_Calls:
@@ -1718,6 +1730,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 566397913}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: PlayerHit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  isInRangeX: 0
+  isInRangeY: 0
+  isInRange: 0
 --- !u!212 &1663307202
 SpriteRenderer:
   serializedVersion: 2
