@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
-{
+{//added this comment to make sure I commited changes because I am paranoid
     //set up player values & stats
     public float pSpeed = 3;
     public int eCount = 0; //how many times they can evolve
